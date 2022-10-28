@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  web:
+    image: webdevops/php-apache:alpine-php7
+    ports:
+      - "80:80"
+    volumes:
+      - /data/php/:/app
+
+    networks:
+      - conecta
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_DATABASE: "banco_teste"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /data/mysql-Dio:/var/lib/mysql
+
+    networks:
+      - conecta
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/php/admin/uploads.ini:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+
+    networks:
+      - conecta
+
+networks:
+   conecta:
+     driver: bridge
